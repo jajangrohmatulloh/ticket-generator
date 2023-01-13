@@ -16,18 +16,31 @@ import axios from 'axios';
 const TableComp = () => {
   const [data, setData] = useState([]);
 
-  const [checkedItems, setCheckedItems] = React.useState([false]);
+  const [checkedItems, setCheckedItems] = useState([false]);
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+
   useEffect(() => {
     axios.get('https://api.jajangrohmatulloh.com').then((response) => {
       setData(response.data);
     });
   }, []);
 
-  const handleTest = () => {
-    console.log(data.map((obj) => console.log(obj)));
+  const handleCheckboxAll = (e) => {
+    let tempArr = [...checkedItems];
+    data.forEach((val, i) => {
+      tempArr[i] = e.target.checked;
+    });
+    setCheckedItems(tempArr);
+    console.log('all', checkedItems);
+  };
+
+  const handleCheckbox = (e) => {
+    let tempArr = [...checkedItems];
+    tempArr[e.target.parentNode.dataset.index] = e.target.checked;
+    setCheckedItems(tempArr);
+    console.log('one', checkedItems);
   };
   return (
     <TableContainer>
@@ -39,7 +52,7 @@ const TableComp = () => {
               <Checkbox
                 isChecked={allChecked}
                 isIndeterminate={isIndeterminate}
-                onChange={(e) => setCheckedItems([e.target.checked])}
+                onChange={(e) => handleCheckboxAll(e)}
               />
             </Th>
             <Th>Ticket id</Th>
@@ -53,8 +66,10 @@ const TableComp = () => {
             <Tr key={obj.ticketId}>
               <Td>
                 <Checkbox
+                  data-index={i}
+                  data-id={obj.ticketId}
                   isChecked={checkedItems[i]}
-                  onChange={(e) => setCheckedItems([e.target.checked])}
+                  onChange={(e) => handleCheckbox(e)}
                 />
               </Td>
               <Td>{obj.ticketId}</Td>
@@ -68,9 +83,11 @@ const TableComp = () => {
         </Tbody>
         <Tfoot>
           <Tr>
-            <Th>To convert</Th>
-            <Th>into</Th>
-            <Th isNumeric>multiply by</Th>
+            <Th></Th>
+            <Th>Ticket id</Th>
+            <Th>Package Event</Th>
+            <Th>Date</Th>
+            <Th>Name</Th>
           </Tr>
         </Tfoot>
       </Table>
