@@ -13,7 +13,7 @@ import {
 import { Checkbox, CheckboxGroup } from '@chakra-ui/react';
 import axios from 'axios';
 
-const TableComp = () => {
+const TableComp = ({ updateData }) => {
   const [data, setData] = useState([]);
 
   const [checkedItems, setCheckedItems] = useState([false]);
@@ -24,8 +24,13 @@ const TableComp = () => {
   useEffect(() => {
     axios.get('https://api.jajangrohmatulloh.com').then((response) => {
       setData(response.data);
+      let tempArr = [...checkedItems];
+      response.data.forEach((val, i) => {
+        tempArr[i] = false;
+      });
+      setCheckedItems(tempArr);
     });
-  }, []);
+  }, [updateData]);
 
   const handleCheckboxAll = (e) => {
     let tempArr = [...checkedItems];
@@ -33,14 +38,12 @@ const TableComp = () => {
       tempArr[i] = e.target.checked;
     });
     setCheckedItems(tempArr);
-    console.log('all', checkedItems);
   };
 
   const handleCheckbox = (e) => {
     let tempArr = [...checkedItems];
     tempArr[e.target.parentNode.dataset.index] = e.target.checked;
     setCheckedItems(tempArr);
-    console.log('one', checkedItems);
   };
   return (
     <TableContainer>
@@ -68,6 +71,7 @@ const TableComp = () => {
                 <Checkbox
                   data-index={i}
                   data-id={obj.ticketId}
+                  className="table__checkbox--one"
                   isChecked={checkedItems[i]}
                   onChange={(e) => handleCheckbox(e)}
                 />

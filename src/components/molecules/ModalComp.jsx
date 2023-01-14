@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Modal,
@@ -15,8 +15,9 @@ import {
   Input,
 } from '@chakra-ui/react';
 
-function ModalComp() {
+function ModalComp({ handlePost }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [updateData, setUpdateData] = useState(0);
 
   const initialRef = React.useRef();
   const dateFromRef = React.useRef();
@@ -26,7 +27,6 @@ function ModalComp() {
   const finalRef = React.useRef();
 
   const handleSubmit = () => {
-    console.log(packageEventRef.current);
     if (
       packageEventRef.current.value &&
       dateFromRef.current.value &&
@@ -44,6 +44,7 @@ function ModalComp() {
         .post('https://api.jajangrohmatulloh.com/create', ticketData)
         .then((response) => {
           console.log(response);
+          setUpdateData(updateData + 1);
           onClose();
         });
     } else {
@@ -51,11 +52,16 @@ function ModalComp() {
     }
   };
 
+  useEffect(() => {
+    handlePost(updateData);
+  }, [updateData]);
+
   return (
     <>
       <Button onClick={onOpen}>Create a new ticket +</Button>
 
       <Modal
+        blockScrollOnMount={false}
         initialFocusRef={initialRef}
         finalFocusRef={finalRef}
         isOpen={isOpen}
