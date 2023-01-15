@@ -24,7 +24,7 @@ const TableComp = ({ updateData }) => {
   useEffect(() => {
     axios.get('https://api.jajangrohmatulloh.com').then((response) => {
       setData(response.data);
-      let tempArr = [...checkedItems];
+      let tempArr = [];
       response.data.forEach((val, i) => {
         tempArr[i] = false;
       });

@@ -15,37 +15,58 @@ import axios from 'axios';
 const DeleteComp = ({ handleData }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deleteData, setDeleteData] = useState({ ticketIds: [] });
+  const [test, setTest] = useState({ ticket: ['sdhsjf', 'dfdjsfkd'] });
   const [updateData, setUpdateData] = useState(0);
+
+  // const handleOpen = () => {
+  //   const checkbox = Array.from(
+  //     document.getElementsByClassName('table__checkbox--one')
+  //   );
+
+  //   checkbox.forEach((val) => {
+  //     setDeleteData({ ticketIds: [] });
+  //     if (val.hasAttribute('data-checked')) {
+  //       setDeleteData(deleteData.ticketIds.push(val.dataset.id));
+  //     }
+  //   });
+
+  //   console.log(deleteData.ticketIds[0]);
+  //   onOpen();
+  // };
 
   const handleDelete = () => {
     const checkbox = Array.from(
       document.getElementsByClassName('table__checkbox--one')
     );
 
+    let tempCheck = { ticketIds: [] };
     checkbox.forEach((val) => {
-      setDeleteData({ ticketIds: [] });
       if (val.hasAttribute('data-checked')) {
-        setDeleteData(deleteData.ticketIds.push(val.dataset.id));
+        tempCheck.ticketIds.push(val.dataset.id);
       }
     });
+    setDeleteData(tempCheck);
 
-    axios
-      .delete('https://api.jajangrohmatulloh.com', {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-
-        data: deleteData,
-      })
-      .then((response) => {
-        console.log(response);
-        setUpdateData(updateData + 1);
-        onClose();
-      })
-      .catch((err) => console.log('sdsd', err));
+    setUpdateData(updateData + 1);
   };
 
   useEffect(() => {
+    if (updateData > 0) {
+      axios
+        .delete('https://api.jajangrohmatulloh.com', {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+
+          data: deleteData,
+        })
+        .then((response) => {
+          console.log(response, deleteData);
+          onClose();
+        })
+        .catch((err) => console.log('sdsd', err, deleteData));
+    }
+
     handleData(updateData);
   }, [updateData]);
   return (
@@ -57,15 +78,17 @@ const DeleteComp = ({ handleData }) => {
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modal Title</ModalHeader>
+          <ModalHeader>Delete this ticket ?</ModalHeader>
           <ModalCloseButton />
           <ModalBody></ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={handleDelete}>
+            <Button colorScheme="red" mr={3} onClick={handleDelete}>
               Delete
             </Button>
-            <Button variant="ghost">Secondary Action</Button>
+            <Button variant="ghost" onClick={onClose}>
+              Cancel
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

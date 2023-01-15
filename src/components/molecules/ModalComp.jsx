@@ -45,7 +45,7 @@ function ModalComp({ handleData }) {
         .then((response) => {
           console.log(response);
           setUpdateData(updateData + 1);
-          onClose();
+          // onClose();
         });
     } else {
       alert('failed to post data');

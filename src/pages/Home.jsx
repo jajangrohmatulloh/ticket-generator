@@ -5,10 +5,10 @@ import DeleteComp from '../components/molecules/DeleteComp';
 import ModalComp from '../components/molecules/ModalComp';
 import TableComp from '../components/molecules/TableComp';
 const Home = () => {
-  const [test, setTest] = useState();
+  const [update, setUpdateData] = useState();
 
   const handleData = (val) => {
-    setTest(val);
+    setUpdateData(val);
   };
 
   return (
@@ -20,7 +20,7 @@ const Home = () => {
           <ModalComp handleData={(val) => handleData(val)} />
         </Flex>
         <Box mt={16}>
-          <TableComp updateData={test} />
+          <TableComp updateData={update} />
         </Box>
       </Container>
     </div>
