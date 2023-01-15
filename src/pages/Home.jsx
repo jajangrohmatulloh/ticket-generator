@@ -7,7 +7,7 @@ import TableComp from '../components/molecules/TableComp';
 const Home = () => {
   const [test, setTest] = useState();
 
-  const handleUpdatePost = (val) => {
+  const handleData = (val) => {
     setTest(val);
   };
 
@@ -15,9 +15,9 @@ const Home = () => {
     <div className="app">
       <Container maxW="1140px" mt="32">
         <Flex>
-          <DeleteComp />
+          <DeleteComp handleData={(val) => handleData(val)} />
           <Spacer />
-          <ModalComp handlePost={(val) => handleUpdatePost(val)} />
+          <ModalComp handleData={(val) => handleData(val)} />
         </Flex>
         <Box mt={16}>
           <TableComp updateData={test} />

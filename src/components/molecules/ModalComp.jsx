@@ -15,7 +15,7 @@ import {
   Input,
 } from '@chakra-ui/react';
 
-function ModalComp({ handlePost }) {
+function ModalComp({ handleData }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [updateData, setUpdateData] = useState(0);
 
@@ -53,7 +53,7 @@ function ModalComp({ handlePost }) {
   };
 
   useEffect(() => {
-    handlePost(updateData);
+    handleData(updateData);
   }, [updateData]);
 
   return (
