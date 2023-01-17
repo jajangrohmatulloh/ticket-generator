@@ -8,6 +8,8 @@ pnpm-debug.log*
 lerna-debug.log*
 
 backend
+src/uireducer.jsx
+src/HOC.jsx
 
 node_modules
 dist

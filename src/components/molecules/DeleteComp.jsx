@@ -46,27 +46,27 @@ const DeleteComp = ({ handleData }) => {
       }
     });
     setDeleteData(tempCheck);
-
-    setUpdateData(updateData + 1);
-  };
-
-  useEffect(() => {
-    if (updateData > 0) {
+    setDeleteData((prevState) => {
       axios
         .delete('https://api.jajangrohmatulloh.com', {
           headers: {
             'Content-Type': 'application/json',
           },
 
-          data: deleteData,
+          data: prevState,
         })
         .then((response) => {
-          console.log(response, deleteData);
+          console.log(response);
           onClose();
         })
-        .catch((err) => console.log('sdsd', err, deleteData));
-    }
+        .catch((err) => console.log(err));
+      return prevState;
+    });
 
+    setUpdateData(updateData + 1);
+  };
+
+  useEffect(() => {
     handleData(updateData);
   }, [updateData]);
   return (
